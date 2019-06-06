@@ -37,6 +37,7 @@ import CICminus.Syntax.Position
 
 newtype Parser a = P { unP :: StateT ParseState (Either ParseError) a }
                    deriving(Monad,
+                            Applicative,
                             Functor,
                             MonadState ParseState,
                             MonadError ParseError)

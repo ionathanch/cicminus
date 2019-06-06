@@ -372,12 +372,12 @@ CommaBIdAndAbsurds :: { ([Name], Range) }
 CommaBIdAndAbsurds : Exps1 {%
     let getName (C.Ident _ x _) = Just x
         getName (C.Meta _ _)    = Just noName
-	getName _               = Nothing
+        getName _               = Nothing
 
     in
-    case partition isJust $ map getName $1 of
-	(good, []) -> return $ (map fromJust (reverse good), fuseRanges $1)
-	_	   -> fail $ "expected sequence of bound identifiers"
+      case partition isJust $ map getName $1 of
+        (good, []) -> return $ (map fromJust (reverse good), fuseRanges $1)
+        _          -> fail $ "expected sequence of bound identifiers"
     }
 
 

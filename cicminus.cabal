@@ -33,6 +33,7 @@ Executable cicminus
                      CICminus.Syntax.Abstract
                      CICminus.Syntax.Alex
                      CICminus.Syntax.Common
+                     CICminus.Syntax.Colors
                      CICminus.Syntax.Internal
                      CICminus.Syntax.InternalToAbstract
                      CICminus.Syntax.AbstractToConcrete
@@ -41,6 +42,7 @@ Executable cicminus
                      CICminus.Syntax.Parser
                      CICminus.Syntax.Position
                      CICminus.Syntax.Scope
+                     CICminus.Syntax.ScopeMonad
                      CICminus.Syntax.Size
                      CICminus.Syntax.Tokens
                      CICminus.Utils.Fresh
@@ -53,7 +55,8 @@ Executable cicminus
                      CICminus.TypeChecking.Case
                      CICminus.TypeChecking.Constraints
                      CICminus.TypeChecking.Conversion
-                     CICminus.TypeChecking.Fix
+                     -- CICminus.TypeChecking.Fix
+                     CICminus.TypeChecking.Fixpoint
                      CICminus.TypeChecking.Inductive
                      -- CICminus.TypeChecking.Permutation
                      CICminus.TypeChecking.PrettyTCM

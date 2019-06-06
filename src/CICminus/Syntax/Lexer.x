@@ -1,7 +1,7 @@
 {
 
-{-# OPTIONS_GHC -fno-warn-deprecated-flags
-                -fno-warn-lazy-unlifted-bindings #-}
+{-# OPTIONS_GHC -fno-warn-deprecated-flags #-}
+
 -- | TODO
 --
 --  * Unicode support: see GHC lexer and Agda lexer (the latter seems simpler)
@@ -88,10 +88,10 @@ lexToken =
 newInput :: PreviousInput -> CurrentInput -> TokenLength -> CurrentInput
 newInput inp inp' len =
     case drop (len - 1) (lexInput inp) of
-	c:s'	-> inp' { lexInput    = s'
-			, lexPrevChar = c
-			}
-	[]	-> inp' { lexInput = [] }
+      c:s'  -> inp' { lexInput    = s'
+          , lexPrevChar = c
+          }
+      []  -> inp' { lexInput = [] }
 
 -- | Alex 2 can't handle unicode characters. To solve this we
 --   translate all Unicode (non-ASCII) identifiers to @z@, all Unicode
@@ -101,15 +101,15 @@ newInput inp inp' len =
 foolAlex :: AlexInput -> AlexInput
 foolAlex inp = inp { lexInput = map fool $ lexInput inp }
     where
-	fool c
-            | isSpace c && not (c `elem` "\t\n") = ' '
-            -- --| c `elem` ['\x2080'..'\x2089'] {- ₀..₉ -} = '1'
-            | c == '\x03a0' {- Π -} = '+'
-            | c == '\x03bb' {- λ -} = '+'
-	    | isUnicodeId c         = if isAlpha c then 'z' else '+'
-	    | otherwise             = c
-        isUnicodeId :: Char -> Bool
-        isUnicodeId c = isPrint c && not (isAscii c)
+      fool c
+        | isSpace c && not (c `elem` "\t\n") = ' '
+        -- --| c `elem` ['\x2080'..'\x2089'] {- ₀..₉ -} = '1'
+        | c == '\x03a0' {- Π -} = '+'
+        | c == '\x03bb' {- λ -} = '+'
+        | isUnicodeId c         = if isAlpha c then 'z' else '+'
+        | otherwise             = c
+      isUnicodeId :: Char -> Bool
+      isUnicodeId c = isPrint c && not (isAscii c)
 
 lexer :: (Token -> Parser a) -> Parser a
 lexer cont = lexToken >>= cont

@@ -59,9 +59,9 @@ langle      = return PP.langle
 rangle      = return PP.rangle
 comma       = return PP.comma
 text :: (MonadTCM tcm) => String -> tcm Doc
-text s	    = return $ PP.text s
+text s      = return $ PP.text s
 sep, fsep, hsep, hcat, vcat :: (MonadTCM tcm) => [tcm Doc] -> tcm Doc
-sep ds	    = PP.sep <$> sequence ds
+sep ds      = PP.sep <$> sequence ds
 fsep ds     = PP.sep <$> sequence ds
 hsep ds     = PP.hsep <$> sequence ds
 hcat ds     = PP.hcat <$> sequence ds
@@ -95,7 +95,7 @@ punctuate :: (MonadTCM tcm) => tcm Doc -> [tcm Doc] -> [tcm Doc]
 punctuate _ [] = []
 punctuate d ds = zipWith (<>) ds (replicate n d ++ [empty])
     where
-	n = length ds - 1
+  n = length ds - 1
 
 
 ---------------------------------------------------------------------------

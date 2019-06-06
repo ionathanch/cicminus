@@ -4,3 +4,5 @@ dist
 *.aux
 *.prof
 *.hp
+.vscode
+.stack-work

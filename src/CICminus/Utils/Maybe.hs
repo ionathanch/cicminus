@@ -2,9 +2,17 @@
 
 module CICminus.Utils.Maybe where
 
+import Control.Monad
 import Control.Monad.Trans
 
 data MaybeT m a = MaybeT { runMT :: m (Maybe a) }
+
+instance Monad m => Functor (MaybeT m) where
+  fmap = liftM
+
+instance Monad m => Applicative (MaybeT m) where
+  pure = return
+  (<*>) = ap
 
 instance (Monad m) => Monad (MaybeT m) where
   m >>= f = MaybeT $ do a <- runMT m
