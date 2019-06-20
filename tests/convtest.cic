@@ -1,0 +1,40 @@
+data option (A++: Type): Type :=
+| some: A -> option A.
+
+-- This would be fine
+fixpoint recopt (o: option nat*): option nat* :=
+    <option nat>
+    case o of
+    | some n => some nat
+        (<nat>
+        case n of
+        | O => O
+        | S m => S (recopt (some nat m))
+        end)
+    end.
+
+-- This would be broken with convertibility of parameters in inductive subtyping
+fixpoint recopt' (o: option nat*): option nat* :=
+    <option nat>
+    case o of
+    | some n => some nat
+        (<nat>
+        case n of
+        | O => O
+        | S m => S (recopt' (some nat
+            (<nat>
+            case m of
+            | O => O
+            | S x => S (recopt' (some nat x))
+            end)))
+        end)
+    end.
+
+-- In recopt', the recursive calls have sized type (option nat<i> -> option nat<i>)
+-- We then require that x: nat<i> and m: nat<i>
+-- With the given subtyping this would be fine but if we require convertibility of inductive parameters,
+-- If we give x: nat<a> and m: nat<b>, we have the constraints
+-- a <= b (from constr),
+-- a <= i, b <= i, i <= a, i <= b (from convertibility during application to recopt')
+-- By transitivity on the convertibility constraints, we get b <= a,
+-- Which creates a cycle a <= b <= a <= ...

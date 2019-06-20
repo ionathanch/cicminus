@@ -72,6 +72,7 @@ instance Show Range where
     show NoRange = "-:-"
 
 instance Pretty Range where
+    pretty NoRange = text "-:-"
     pretty (Range start end) = text $ concat [posFile start,
                                      ":",
                                      show (posLine start), ":",

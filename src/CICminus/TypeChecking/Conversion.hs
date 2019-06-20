@@ -126,7 +126,8 @@ instance Conversion Type where
           traceTCM 40 $ text "Adding constraints:"<+> prettyTCM (mkConstraint (indKind ind) a1' a2')
           addStageConstraints (mkConstraint (indKind ind) a1' a2')
           case ind of
-            Inductive {} -> mAll (zipWith3 (convPars ct) (indPol ind) ps1 ps2)
+            Inductive {} -> -- mAll (zipWith (convTest Conv) ps1 ps2)
+                            mAll (zipWith3 (convPars ct) (indPol ind) ps1 ps2)
             _ -> __IMPOSSIBLE__ -- sanity check
     | otherwise = return False
     where
@@ -156,7 +157,8 @@ instance Conversion Type where
           case ind of
             Inductive {} ->
                 if length ts1 == length ts2
-                then mAll (zipWith3 (convPars ct) (indPol ind) ps1 ps2) `mAnd`
+                then -- mAll (zipWith (convTest Conv) ps1 ps2) `mAnd`
+                     mAll (zipWith3 (convPars ct) (indPol ind) ps1 ps2) `mAnd`
                      mAll (zipWith (convTest Conv) ts1 ts2)
                 else return False
             _ -> __IMPOSSIBLE__ -- sanity check

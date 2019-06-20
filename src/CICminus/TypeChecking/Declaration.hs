@@ -99,7 +99,7 @@ inferDecl (A.Definition _ nm (Just (A.ConstrExpr rg stas expType)) expBody) = do
         constraints <- allConstraints
         case findNegCycle (VarNode s) (unSC constraints) of
           [] -> return ()
-          _  -> notImplemented rg ("Size constraint not satisfied "
+          _  -> notImplemented rg ("Size constraint not satisfied (negCycle): "
                                    ++ show nmsize)
 
       checkIndependence :: (MonadTCM tcm) =>
@@ -114,7 +114,7 @@ inferDecl (A.Definition _ nm (Just (A.ConstrExpr rg stas expType)) expBody) = do
         -- Check that there is no path from s1 to s2
         let ups = upward (unSC constraints) [VarNode s1]
         when (VarNode s2 `elem` ups)
-          $ notImplemented rg ("Size constraint not satisfied "
+          $ notImplemented rg ("Size constraint not satisfied (hasPath): "
                                ++ show nmsize)
 
 inferDecl (A.Definition _ x Nothing e) = do

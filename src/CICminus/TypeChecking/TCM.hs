@@ -77,11 +77,11 @@ data TypeError
     | FixRecursiveArgumentNotPositive
     | AlreadyDefined Name
     | InvalidStageAnnotation
-    deriving(Typeable)
+    deriving(Typeable, Show)
 
 
-instance Show TypeError where
-    show (NotConvertible t1 t2) = "NotConvertible"
+-- instance Show TypeError where
+    -- show (NotConvertible t1 t2) = "NotConvertible"
     -- show (TypeNotConvertible t u1 u2) = "NotConvertible " ++ show r
     -- show (NotFunction r e t1) = "NotFunction " ++ show r
     -- show (NotSort r e t1) = "NotSort " ++ show r

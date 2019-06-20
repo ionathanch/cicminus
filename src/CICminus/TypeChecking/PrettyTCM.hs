@@ -140,6 +140,7 @@ instance PrettyTCM TypeError where
   -- prettyTCM (WrongFixNumber r _ _) = "WrongFixNumber " ++ prettyTCM r
   prettyTCM (UndefinedName x) =
     text "Undefined name:" <+> prettyTCM x
+  prettyTCM err = text "Other error: " <+> text (show err)
   -- prettyTCM (NotInductive r n) = "NotInductive " ++ prettyTCM r ++ " " ++ prettyTCM n
   -- prettyTCM (ConstructorNotApplied r n) = "ConstructorNotApplied " ++ prettyTCM r ++ " " ++ prettyTCM n
   -- prettyTCM (InductiveNotApplied r n) = "InductiveNotApplied " ++ prettyTCM r ++ " " ++ prettyTCM n
