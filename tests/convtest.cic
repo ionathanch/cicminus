@@ -2,10 +2,10 @@ data option (A++: Type): Type :=
 | some: A -> option A.
 
 -- This would be fine
-fixpoint recopt (o: option nat*): option nat* :=
+fixpoint recopt (o: option nat*): nat* :=
     <option nat>
     case o of
-    | some n => some nat
+    | some n =>
         (<nat>
         case n of
         | O => O
@@ -13,28 +13,29 @@ fixpoint recopt (o: option nat*): option nat* :=
         end)
     end.
 
--- This would be broken with convertibility of parameters in inductive subtyping
-fixpoint recopt' (o: option nat*): option nat* :=
+fixpoint recopt' (o: option nat*): nat* :=
     <option nat>
     case o of
-    | some n => some nat
+    | some n =>
         (<nat>
         case n of
         | O => O
-        | S m => S (recopt' (some nat
+        | S m => S
             (<nat>
             case m of
             | O => O
-            | S x => S (recopt' (some nat x))
-            end)))
+            | S x => (recopt' (some nat (S (recopt' (some nat x)))))
+            end)
         end)
     end.
 
--- In recopt', the recursive calls have sized type (option nat<i> -> option nat<i>)
--- We then require that x: nat<i> and m: nat<i>
--- With the given subtyping this would be fine but if we require convertibility of inductive parameters,
--- If we give x: nat<a> and m: nat<b>, we have the constraints
--- a <= b (from constr),
--- a <= i, b <= i, i <= a, i <= b (from convertibility during application to recopt')
--- By transitivity on the convertibility constraints, we get b <= a,
--- Which creates a cycle a <= b <= a <= ...
+-- recopt':                                         option nat<i> -> nat<i>
+-- x:                                               nat<s1>
+-- some nat:                                        nat<s2> -> option nat<s2>
+-- some nat x:                                      option nat<s2>                      nat<s1> <= nat<s2>
+-- recopt' (some nat x):                            nat<i>                              option nat<s2> <= option nat<i>
+-- S:                                               nat<s3> -> nat<s3+1>
+-- S (recopt' (some nat x))                         nat<s3+1>                           nat<i> <= nat<s3>
+-- some nat:                                        nat<s4> -> option nat<s4>
+-- some nat (S (recopt' (some nat x)))              option nat<s4>                      nat<s3+1> <= nat<s4>
+-- recopt' (some nat (S (recopt' (some nat x))))    option nat<i>                       option nat<s4> <= option nat<i>
